@@ -1,19 +1,33 @@
 require 'test/unit'
 require 'gembots/custom'
 
+def make_bot
+  bot = Gembots::Robot.new
+  bot.name = "test"
+  bot.turn 2
+  bot.move 5
+  bot
+end
+
 class BotTest < Test::Unit::TestCase
   def test_name
-    test_bot = Gembots::Robot.new
-    test_bot.name = "test"
-    assert_equal "test",
-      test_bot.name
+    bot = make_bot
+    assert_equal "test", bot.name
   end
 
   def test_position
-    test_bot = Gembots::Robot.new
-    test_bot.turn 2
-    test_bot.move 5
-    assert_equal 5,
-      test_bot.x_pos
+    bot = make_bot
+    assert_equal 5, bot.x_pos
+  end
+
+  def test_clone
+    bot = make_bot
+    bot_clone = bot.clone
+    assert_equal bot_clone.parent_id, bot.id
+  end
+
+  def test_id
+    bot = make_bot
+    assert_equal bot.object_id, bot.id
   end
 end
