@@ -1,6 +1,6 @@
 # Gembots
 
-TODO: Write a gem description
+Gembots is a ruby library for creating your own battle bot in ruby. This is almost exclusively based on [FightCodeGame](http://fightcodegame.com), but the arena is in the cli, and of course, it's in ruby. Currently it is in EXTREMELY early development and I(L8D) don't know half of what I'm doing. Nothing has been finished/made ready yet...
 
 ## Installation
 
