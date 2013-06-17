@@ -1,11 +1,13 @@
 module CustomRobot
   class Robot
     attr_accessor :name
+    attr_accessor :idle
     def initialize
       @name = "Robot"
       @x_pos = 0
       @y_pos = 0
       @angle = 0
+      @idle = Proc.new { |*ignored| }
     end
     
     def x_pos
@@ -22,7 +24,7 @@ module CustomRobot
 
     def new
       self.initialize
-      return self
+      self
     end
 
     # rotates clockwise the degrees specified
@@ -68,9 +70,15 @@ module CustomRobot
           puts "Angle is not between 0 and 7!"
           exit
       end
+
       # wrap around arena if position moves out of bounds
       @y_pos -= 21 if @y_pos > 10 or @y_pos < -10
       @x_pos -= 21 if @x_pos > 10 or @x_pos < -10
     end
+
+    def fire
+      # some code here that packages up variables and sends to the main loop
+    end
+
   end
 end
