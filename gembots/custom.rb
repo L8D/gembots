@@ -2,29 +2,42 @@ module CustomRobot
   class Robot
     attr_accessor :name
     attr_accessor :idle
+    attr_accessor :parent_id
     def initialize
+      @parent_id = nil
       @name = "Robot"
       @x_pos = 0
       @y_pos = 0
       @angle = 0
       @idle = Proc.new { |*ignored| }
     end
-    
+
+    # standard accessible values    
     def x_pos
-      return @x_pos
+      @x_pos
     end
 
     def y_pos
-      return @y_pos
+      @y_pos
     end
 
     def angle
-      return @angle
+      @angle
     end
 
-    def new
-      self.initialize
-      self
+    def id
+      self.object_id
+    end
+
+    # useful functions
+    def is_clone_of? robot
+      @parent_id == robot.id
+    end
+
+    def clone
+      clone = self.dup
+      clone.parent_id = self.id
+      clone
     end
 
     # rotates clockwise the degrees specified
