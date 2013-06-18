@@ -57,8 +57,17 @@ class Gembots::Robot
     # math stuff here to calculate movement and stuff
   end
 
+  # rotates angle in degrees clockwise
+  # use negative numbers to move counter-clockwise
+  def turn angle
+    @angle += angle
+    # additional code to implement animation speed/timing if need be
+    self.update
+  end
+
   # defaults to prevent errors when stuff isn't defined
   def when_idle *i; end;
   def when_find_robot *i; end;
   def when_robot_collision *i; end;
+  def update *i; end;
 end
