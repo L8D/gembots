@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'gembots/custom'
+require 'gembots/bot'
 
 def make_bot
   bot = Gembots::Robot.new

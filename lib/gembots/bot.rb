@@ -1,9 +1,6 @@
-#require 'gembots'
+require 'gembots'
+
 # useful math functions/methods
-
-module Gembots
-end
-
 class Integer
   def to_radian
     self * (Math::PI / 180.0)
