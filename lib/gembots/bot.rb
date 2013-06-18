@@ -8,8 +8,8 @@ class Integer
 end
 
 def rotation_matrix angle
-  cos = Math::cos angle
-  sin = Math::sin angle
+  cos = Math.cos angle
+  sin = Math.sin angle
 
   return [[cos, -sin], [sin, cos]] unless angle < 0
   return [[cos, sin], [-sin, cos]]
@@ -65,6 +65,11 @@ class Gembots::Robot
   # use negative numbers to move counter-clockwise
   def turn angle
     @angle += angle
+
+    # wrapping
+    @angle -= 360 if @angle > 360
+    @angle += 360 if @angle < 360
+
     # additional code to implement animation speed/timing if need be
     self.update
   end
