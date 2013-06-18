@@ -18,7 +18,7 @@ end
 class Gembots::Robot
   # robots name
   attr_accessor :name
-  
+
   # coordinates
   attr_reader   :x_pos
   attr_reader   :y_pos
@@ -28,7 +28,7 @@ class Gembots::Robot
   attr_reader   :id
   attr_accessor :parent_id # i know it's possible to abuse this
 
-  def initialize name="Robot"
+  def initialize name = 'Robot'
     @name            = name
 
     @x_pos           = 0
@@ -56,7 +56,16 @@ class Gembots::Robot
   def move dist=1
     # math stuff here to calculate movement and stuff
     # for now I'll just implement 8 directions
-    directions = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]
+    directions = [
+      [1,   0],  #   0
+      [1,   1],  #  45
+      [0,   1],  #  90
+      [-1,  1],  # 135
+      [-1,  0],  # 180
+      [-1, -1],  # 225
+      [0,  -1],  # 270
+      [1,  -1]   # 315
+    ]
     @y_pos += dist * directions[@angle / 90][0]
     @x_pos += dist * directions[@angle / 90][1]
   end
@@ -74,9 +83,22 @@ class Gembots::Robot
     self.update
   end
 
-  # defaults to prevent errors when stuff isn't defined
-  def when_idle *i; end;
-  def when_find_robot *i; end;
-  def when_robot_collision *i; end;
-  def update *i; end;
+  # defaults to prevent errors when stuff isn't defined + awesome docs
+
+  # main loop idle code
+  # it gets interrupted whenever other functions need to get called
+  def when_idle robot
+  end
+
+  # angle/view has detected another robot
+  def when_find_robot robot, target_robot
+  end
+
+  # when moving to the same space as another robot
+  def when_robot_collision robot, target_robot
+  end
+
+  # function run to tell arena to update their crap
+  def update *i
+  end
 end
