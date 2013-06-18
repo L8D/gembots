@@ -11,8 +11,8 @@ def rotation_matrix angle
   cos = Math.cos angle
   sin = Math.sin angle
 
-  return [[cos, -sin], [sin, cos]] unless angle < 0
-  return [[cos, sin], [-sin, cos]]
+  [[cos, -sin], [sin, cos]] unless angle < 0
+  [[cos, sin], [-sin, cos]]
 end
 
 class Gembots::Robot
