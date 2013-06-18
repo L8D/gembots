@@ -1,12 +1,16 @@
+require 'gembots'
+
 class Gembots::Arena
   def initialize *bots
     bots.each do |bot|
-      puts bot.name
+      bot.arena = self
+      def bot.update arena
+        arena.update_bot self
+      end
     end
   end
 
-  def new *args
-    self.initialize args
-    return self
+  def update_bot robot
+    # something here
   end
 end
