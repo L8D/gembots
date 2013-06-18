@@ -66,8 +66,8 @@ class Gembots::Robot
       [0,  -1],  # 270
       [1,  -1]   # 315
     ]
-    @y_pos += dist * directions[@angle / 90][0]
-    @x_pos += dist * directions[@angle / 90][1]
+    @y_pos += dist * directions[360 / @angle - 1][0]
+    @x_pos += dist * directions[360 / @angle - 1][1]
   end
 
   # rotates angle in degrees clockwise
@@ -77,7 +77,7 @@ class Gembots::Robot
 
     # wrapping
     @angle -= 360 if @angle > 360
-    @angle += 360 if @angle < 360
+    @angle += 360 if @angle < 0
 
     # additional code to implement animation speed/timing if need be
     self.update
