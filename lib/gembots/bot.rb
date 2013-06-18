@@ -57,8 +57,8 @@ class Gembots::Robot
     # math stuff here to calculate movement and stuff
     # for now I'll just implement 8 directions
     directions = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]
-    @y_pos += dist * directions[@angle / 8 - 1][0]
-    @x_pos += dist * directions[@angle / 8 - 1][1]
+    @y_pos += dist * directions[@angle / 90][0]
+    @x_pos += dist * directions[@angle / 90][1]
   end
 
   # rotates angle in degrees clockwise

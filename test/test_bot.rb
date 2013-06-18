@@ -4,7 +4,7 @@ require 'gembots/bot'
 def make_bot
   bot = Gembots::Robot.new
   bot.name = "test"
-  bot.turn 2
+  bot.turn 90
   bot.move 5
   bot
 end
