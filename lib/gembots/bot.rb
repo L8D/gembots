@@ -28,6 +28,9 @@ class Gembots::Robot
   attr_reader   :id
   attr_accessor :parent_id # i know it's possible to abuse this
 
+  # robot arena
+  attr_accessor :arena
+
   def initialize name = 'Robot'
     @name            = name
 
@@ -68,6 +71,8 @@ class Gembots::Robot
     ]
     @y_pos += dist * directions[360 / @angle - 1][0]
     @x_pos += dist * directions[360 / @angle - 1][1]
+
+    self.update @arena
   end
 
   # rotates angle in degrees clockwise
@@ -80,7 +85,7 @@ class Gembots::Robot
     @angle += 360 if @angle < 0
 
     # additional code to implement animation speed/timing if need be
-    self.update
+    self.update @arena
   end
 
   # defaults to prevent errors when stuff isn't defined + awesome docs
