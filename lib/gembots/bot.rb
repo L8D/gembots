@@ -1,20 +1,5 @@
 require 'gembots'
 
-# useful math functions/methods
-class Integer
-  def to_radian
-    self * (Math::PI / 180.0)
-  end
-end
-
-def rotation_matrix angle
-  cos = Math.cos angle
-  sin = Math.sin angle
-
-  [[cos, -sin], [sin, cos]] unless angle < 0
-  [[cos, sin], [-sin, cos]]
-end
-
 # The Robot class is used to create and define robots.
 class Gembots::Robot
   # String contained the robot's name.
