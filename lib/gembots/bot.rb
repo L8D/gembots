@@ -15,20 +15,30 @@ def rotation_matrix angle
   [[cos, sin], [-sin, cos]]
 end
 
+# The Robot class is used to create and define robots.
 class Gembots::Robot
-  # robots name
+  # String contained the robot's name.
+  # This will typically used for things like announcements during battles.
   attr_accessor :name
 
-  # coordinates
+  # X position relative to the arena.
   attr_reader   :x_pos
+
+  # Y position relative to the arena.
   attr_reader   :y_pos
+
+  # Number between 0 and 360 representing the robot's current facing angle.
   attr_reader   :angle
 
-  # robot ids
+  # This is simply the robot's player ID.
+  # It is typically the Object ID, but may be changed to fit other uses.
   attr_reader   :id
-  attr_accessor :parent_id # i know it's possible to abuse this
 
-  # robot arena
+  # This is the ID of a cloned robot's parent.
+  # Otherwise if the robot is not a cloned one, the value will be nil.
+  attr_accessor :parent_id
+
+  # This is set and used by the current robot's arena, if there is one.
   attr_accessor :arena
 
   def initialize name = 'Robot'
@@ -42,23 +52,24 @@ class Gembots::Robot
     @parent_id       = nil
   end
 
-  # return duplicate robot with own parent_id
+  # Returns a duplicate robot(clone) with it's own +parent_id+.
   def clone
     clone = self.dup
     clone.parent_id = self.id
     clone
   end
 
-  # useful information functions
-  def is_clone_of? robot
-    @parent_id == robot.id
+  # Returns true if robot is a clone of target_robot.
+  def is_clone_of? target_robot
+    @parent_id == target_robot.id
   end
 
-  # moves forward the distance specified
-  # use negative numbers to move in reverse
-  def move dist=1
-    # math stuff here to calculate movement and stuff
-    # for now I'll just implement 8 directions
+  # Moves the robot forward along it's angle for the distance specified.
+  # To move backward just use a negative value.
+  # Currently it only supports movement along 8 directions.
+  def move dist = 1
+    # Eventually some math using rotation_matrix will be here, in order to calculate all 360 directions.
+    # For now I'm only implementing 8 directions.
     directions = [
       [1,   0],  #   0
       [1,   1],  #  45
@@ -75,35 +86,36 @@ class Gembots::Robot
     self.update @arena
   end
 
-  # rotates angle in degrees clockwise
-  # use negative numbers to move counter-clockwise
+  # Rotates angle in degrees clockwise
+  # To rotate counter-clockwise just use a negative number
   def turn angle
     @angle += angle
 
-    # wrapping
+    # Used for wrapping:
     @angle -= 360 if @angle > 360
     @angle += 360 if @angle < 0
 
-    # additional code to implement animation speed/timing if need be
     self.update @arena
   end
 
-  # defaults to prevent errors when stuff isn't defined + awesome docs
+  # These functions are just for documentation and to prevent erros when calling these undefined
 
-  # main loop idle code
-  # it gets interrupted whenever other functions need to get called
+  # This is run whenever the game is in idle state.
+  # It is likely used as the robot's main loop.
   def when_idle robot
   end
 
-  # angle/view has detected another robot
+  # This is run whenever another robot is seen within the facing angle.
+  # It usually has some code to fire at the target robot.
+  # Make sure to check that it is not your robot's clone!
   def when_find_robot robot, target_robot
   end
 
-  # when moving to the same space as another robot
+  # This is run whenever this robot has ended up colliding with another robot.
   def when_robot_collision robot, target_robot
   end
 
-  # function run to tell arena to update their crap
+  # This function is used by the arena for updates and delays and stuff.
   def update *i
   end
 end
