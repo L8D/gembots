@@ -2,7 +2,7 @@ require 'gembots'
 
 # The Robot class is used to create and define robots.
 class Gembots::Robot
-  # String contained the robot's name.
+  # String contains the robot's name.
   # This will typically used for things like announcements during battles.
   attr_accessor :name
 
