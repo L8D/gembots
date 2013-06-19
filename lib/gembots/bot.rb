@@ -85,18 +85,18 @@ class Gembots::Robot
 
   # These functions are just for documentation and to prevent erros when calling these undefined
 
-  # This is run whenever the game is in idle state.
+  # Called whenever the game is in idle state.
   # It is likely used as the robot's main loop.
   def when_idle robot
   end
 
-  # This is run whenever another robot is seen within the facing angle.
+  # Called whenever another robot is seen within the facing angle.
   # It usually has some code to fire at the target robot.
   # Make sure to check that it is not your robot's clone!
   def when_find_robot robot, target_robot
   end
 
-  # This is run whenever this robot has ended up colliding with another robot.
+  # Called whenever this robot has ended up colliding with another robot.
   def when_robot_collision robot, target_robot
   end
 
