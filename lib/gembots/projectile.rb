@@ -57,8 +57,8 @@ class Gembots::Projectile
     self.update @arena
   end
 
-  # Rotates angle in degrees clockwise
-  # To rotate counter-clockwise just use a negative number
+  # Rotates angle in degrees clockwise.
+  # To rotate counter-clockwise just use a negative number.
   def turn angle
     @angle += angle
 
