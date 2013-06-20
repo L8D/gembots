@@ -71,8 +71,8 @@ class Gembots::Robot
     self.update @arena
   end
 
-  # Rotates angle in degrees clockwise
-  # To rotate counter-clockwise just use a negative number
+  # Rotates angle in degrees clockwise.
+  # To rotate counter-clockwise just use a negative number.
   def turn angle
     @angle += angle
 
@@ -83,7 +83,13 @@ class Gembots::Robot
     self.update @arena
   end
 
-  # These functions are just for documentation and to prevent erros when calling these undefined
+  # Spawns projectile of type `bullet` in arena(if there is one).
+  def fire
+    arena or return
+    @arena.spawn Projectile.new 'bullet', @id, @x_pos, @y_pos, @angle
+  end
+
+  # These functions are just for documentation and to prevent erros when calling these undefined.
 
   # Called whenever the game is in idle state.
   # It is likely used as the robot's main loop.
