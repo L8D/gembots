@@ -32,10 +32,10 @@ class Gembots::Projectile
     @angle           = ang
 
     @id              = self.object_id
-    @parent_id       = nil
+    @parent_id       = par
   end
 
-  # Moves the robot forward along it's angle for the distance specified.
+  # Moves projectile forward along it's angle for the distance specified.
   # To move backward just use a negative value.
   # Currently it only supports movement along 8 directions.
   def move dist = 1
