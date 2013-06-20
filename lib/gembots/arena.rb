@@ -30,6 +30,8 @@ class Gembots::Arena
     # something here
   end
 
+  # Spawn object into board and objects array.
+  # Most used for spawning projectiles.
   def spawn object
     @objects[object.id] = object
     @board[object.x_pos][object.y_pos] << object.id
