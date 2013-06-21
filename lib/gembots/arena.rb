@@ -5,9 +5,6 @@ class Gembots::Arena
   # This is a hash table containing the ids of each object.
   attr_reader :objects
 
-  # Same as objects, but it contains and older copy to detect changes during a update_bot.
-  attr_reader :objects_pre
-
   # 2-dimensional array of the current arena.
   # By default this is a 20x20 board
   attr_reader :board
