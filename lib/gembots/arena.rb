@@ -13,9 +13,9 @@ class Gembots::Arena
   attr_reader :board
 
   def initialize *bots
-    @objects = Hash.new
-    @objects = Hash.new
-    @board   = Array.new 20, (Array.new 20, [])
+    @objects     = Hash.new
+    @objects_pre = Hash.new
+    @board       = Array.new 20, (Array.new 20, [])
 
     # define each bots' update function and add to players hash
     bots.each do |bot|
