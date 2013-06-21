@@ -14,34 +14,29 @@ class Gembots::Arena
 
   def initialize *bots
     @objects     = Hash.new
-    @objects_pre = Hash.new
     @board       = Array.new(20) { Array.new(20) { [] } }
 
     # define each bots' update function and add to players hash
     bots.each do |bot|
       bot.arena = self
       @objects[bot.id] = bot
-      @objects_pre[bot.id] = bot
       @board[bot.x_pos][bot.y_pos] << bot.id
 
-      def bot.update arena
-        arena.update_bot self
+      def bot.update arena, x_old = nil, y_old = nil
+        arena.update_bot self, x_old, y_old
       end
     end
   end
 
   # Used for updating the board based on changes in robot.
-  def update_bot robot
-    id = robot.id
-    # detect movement
-    if robot.x_pos != @objects_pre[id].x_pos or robot.y_pos != @objects_pre[id].y_pos
+  def update_bot robot, x_old, y_old
+    if x_old != nil and y_old != nil
+      # remove id from board
+      @board[x_old][y_old].delete robot.id
+
       # set new pos
       @board[robot.x_pos][robot.y_pos] << robot.id
-      # remove id from old pos
-      @board[@objects_pre[id].x_pos][@objects_pre[id].y_pos].delete robot.id
     end
-    # update objects_pre
-    @objects_pre[id] = robot
   end
 
   # Spawn object into board and objects array.

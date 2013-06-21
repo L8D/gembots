@@ -53,6 +53,7 @@ class Gembots::Robot
   # To move backward just use a negative value.
   # Currently it only supports movement along 8 directions.
   def move dist = 1
+    y_old, x_old = @y_pos, @x_pos
     # Eventually some math using rotation_matrix will be here, in order to calculate all 360 directions.
     # For now I'm only implementing 8 directions.
     directions = [
@@ -65,10 +66,10 @@ class Gembots::Robot
       [0,  -1],  # 270
       [1,  -1]   # 315
     ]
-    @y_pos += dist * directions[360 / @angle - 1][0]
-    @x_pos += dist * directions[360 / @angle - 1][1]
+    @y_pos += dist * directions[360 / @angle - 2][0]
+    @x_pos += dist * directions[360 / @angle - 2][1]
 
-    self.update @arena
+    self.update @arena, x_old, y_old
   end
 
   # Rotates angle in degrees clockwise.
