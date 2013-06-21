@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "gembots"
-  spec.version       = '0.0.02'
+  spec.version       = '0.0.03'
   spec.authors       = ["L8D"]
   spec.email         = ["tenorbiel@gmail.com"]
   spec.description   = %q{Library for creating Gembots}
