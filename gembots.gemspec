@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.files         = ["lib/gembots/arena.rb", "lib/gembots/bot.rb"]
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "gosu"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 end
