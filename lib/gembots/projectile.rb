@@ -10,7 +10,7 @@ class Gembots::Projectile
 
   def initialize window, x=0, y=0, angle=0
     @window = window
-    @image = Gosu::Image.new @window, "media/projectile.png", false
+    @image = Gosu::Image.new @window, "#{Gembots::MEDIA}/projectile.png", false
     @angle = angle
     @x = x + Gosu::offset_x(@angle, 10)
     @y = y + Gosu::offset_y(@angle, 10)

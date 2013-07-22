@@ -17,8 +17,8 @@ class Gembots::Robot
     @warped = false
     @actions = []
     @window = window
-    @images = Gosu::Image::load_tiles(window, "media/tank.png", 32, 32, false)
-    @image = Gosu::Image.new window, "media/cannon.png", false
+    @images = Gosu::Image::load_tiles(window, "#{Gembots::MEDIA}/tank.png", 32, 32, false)
+    @image = Gosu::Image.new window, "#{Gembots::MEDIA}/cannon.png", false
     @x = @y = @angle = @cur_image = 0.0
   end
 
