@@ -1,45 +1,33 @@
 require 'gembots'
 
-# The Arena class is used to create and simulate arenas.
-class Gembots::Arena
-  # This is a hash table containing the ids of each object.
-  attr_reader :objects
-
-  # 2-dimensional array of the current arena.
-  # By default this is a 20x20 board
-  attr_reader :board
-
+class Gembots::Arena < Gosu::Window
+  attr_reader :bots
   def initialize *bots
-    @objects     = Hash.new
-    @board       = Array.new(20) { Array.new(20) { [] } }
+    super 640, 480, false
+    self.caption = "Gembots battle"
+    @bots = []
 
-    # define each bots' update function and add to players hash
-    bots.each do |bot|
-      bot.arena = self
-      @objects[bot.id] = bot
-      @board[bot.x_pos][bot.y_pos] << bot.id
+    bots.each do |bot_class|
+      bot = bot_class.new self
+      bot.warp 320, 240
+      @bots << bot
+    end
+  end
 
-      def bot.update arena, x_old = nil, y_old = nil
-        arena.update_bot self, x_old, y_old
+  def draw
+    @bots.each &:draw
+  end
+
+  def update
+    @bots.each &:update
+    @bots.each do |bot|
+      if bot.actions.empty?
+        bot.on_idle
       end
     end
   end
 
-  # Used for updating the board based on changes in robot.
-  def update_bot robot, x_old, y_old
-    if x_old != nil and y_old != nil
-      # remove id from board
-      @board[x_old][y_old].delete robot.id
-
-      # set new pos
-      @board[robot.x_pos][robot.y_pos] << robot.id
-    end
-  end
-
-  # Spawn object into board and objects array.
-  # Most used for spawning projectiles.
-  def spawn object
-    @objects[object.id] = object
-    @board[object.x_pos][object.y_pos] << object.id
+  def button_down id
+    close if id == Gosu::KbEscape
   end
 end

@@ -3,18 +3,23 @@ require 'gembots'
 require 'gembots/arena'
 require 'gembots/bot'
 
-class ArenaTest < Test::Unit::TestCase
-  def test_has_bot
-    bot = Gembots::Robot.new
-    arena = Gembots::Arena.new bot
-    assert_equal bot, arena.objects[bot.id]
+class MyBot1 < Gembots::Robot
+  def on_idle
+    self.move
+    self.turn
   end
+end
 
-  def test_board_movement
-    bot   = Gembots::Robot.new
-    arena = Gembots::Arena.new bot
-    bot.turn 90
-    bot.move 1
-    assert_equal bot.id, arena.board[1][0][0]
+class MyBot2 < Gembots::Robot
+  def on_idle
+    self.move 50
+    self.turn 180
+  end
+end
+
+class ArenaTest < Test::Unit::TestCase
+  def test_arena_window
+    arena = Gembots::Arena.new MyBot1, MyBot2
+    arena.show
   end
 end
