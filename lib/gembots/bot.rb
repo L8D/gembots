@@ -1,113 +1,59 @@
 require 'gembots'
 
-# The Robot class is used to create and define robots.
 class Gembots::Robot
-  # String contains the robot's name.
-  # This will typically used for things like announcements during battles.
-  attr_accessor :name
+  attr_reader :x, :y, :angle, :actions
 
-  # X position relative to the arena.
-  attr_reader   :x_pos
-
-  # Y position relative to the arena.
-  attr_reader   :y_pos
-
-  # Number between 0 and 360 representing the robot's current facing angle.
-  attr_reader   :angle
-
-  # This is simply the robot's player ID.
-  # It is typically the Object ID, but may be changed to fit other uses.
-  attr_reader   :id
-
-  # This is the ID of a cloned robot's parent.
-  # Otherwise if the robot is not a cloned one, the value will be nil.
-  attr_accessor :parent_id
-
-  # This is set and used by the current robot's arena, if there is one.
-  attr_accessor :arena
-
-  def initialize name = 'Robot'
-    @name            = name
-
-    @x_pos           = 0
-    @y_pos           = 0
-    @angle           = 0
-
-    @id              = self.object_id
-    @parent_id       = nil
+  def initialize window
+    @actions = []
+    @window = window
+    @images = Gosu::Image::load_tiles(window, "media/tank.png", 32, 32, false)
+    @image = Gosu::Image.new window, "media/cannon.png", false
+    @x = @y = @angle = @cur_image = 0.0
   end
 
-  # Returns a duplicate robot(clone) with it's own +parent_id+.
-  def clone
-    clone = self.dup
-    clone.parent_id = self.id
-    clone
+  def warp x, y
+    @x, @y = x, y
   end
 
-  # Returns true if robot is a clone of target_robot.
-  def is_clone_of? target_robot
-    @parent_id == target_robot.id
+  def turn angle=10
+    @actions << [:turn, angle]
   end
 
-  # Moves the robot forward along it's angle for the distance specified.
-  # To move backward just use a negative value.
-  # Currently it only supports movement along 8 directions.
-  def move dist = 1
-    y_old, x_old = @y_pos, @x_pos
-    # Eventually some math using rotation_matrix will be here, in order to calculate all 360 directions.
-    # For now I'm only implementing 8 directions.
-    directions = [
-      [1,   0],  #   0
-      [1,   1],  #  45
-      [0,   1],  #  90
-      [-1,  1],  # 135
-      [-1,  0],  # 180
-      [-1, -1],  # 225
-      [0,  -1],  # 270
-      [1,  -1]   # 315
-    ]
-    @y_pos += dist * directions[360 / @angle - 2][0]
-    @x_pos += dist * directions[360 / @angle - 2][1]
-
-    self.update @arena, x_old, y_old
+  def move dist=10
+    @actions << [:move, dist]
   end
 
-  # Rotates angle in degrees clockwise.
-  # To rotate counter-clockwise just use a negative number.
-  def turn angle
-    @angle += angle
+  def update
+    return if @actions.empty?
+    case @actions[0][0]
+    when :move then
+      # I probably should implement dist = @actions[0][1]; dist %= 0.5 or something
+      # but right now I'm tired, and worried I will screw up the math if I try that...
+      dist = @actions[0][1] <= 0.9 ? @actions[0][1] : 1.0
+      @x += Gosu::offset_x @angle, dist
+      @y += Gosu::offset_y @angle, dist
+      @x %= 640
+      @y %= 480
 
-    # Used for wrapping:
-    @angle -= 360 if @angle > 360
-    @angle += 360 if @angle < 0
+      @cur_image += 0.1
+      @cur_image %= 7.0
 
-    self.update @arena
+      @actions[0][1] -= 0.5
+      @actions.shift if @actions[0][1] == 0.0
+
+    when :turn then
+      deg = @actions[0][1] <= 9 ? @actions[0][1] : 10
+
+      @angle += deg
+      @angle %= 360
+      @actions[0][1] -= deg
+
+      @actions.shift if @actions[0][1] == 0
+    end
   end
 
-  # Spawns projectile of type `bullet` in arena(if there is one).
-  def fire
-    arena or return
-    @arena.spawn Projectile.new 'bullet', @id, @x_pos, @y_pos, @angle
-  end
-
-  # These functions are just for documentation and to prevent erros when calling these undefined.
-
-  # Called whenever the game is in idle state.
-  # It is likely used as the robot's main loop.
-  def when_idle robot
-  end
-
-  # Called whenever another robot is seen within the facing angle.
-  # It usually has some code to fire at the target robot.
-  # Make sure to check that it is not your robot's clone!
-  def when_find_robot robot, target_robot
-  end
-
-  # Called whenever this robot has ended up colliding with another robot.
-  def when_robot_collision robot, target_robot
-  end
-
-  # This function is used by the arena for updates and delays and stuff.
-  def update *i
+  def draw
+    @images[@cur_image].draw_rot @x, @y, 1, @angle - 90 % 360
+    @image.draw_rot @x, @y, 1, @angle - 90 % 360
   end
 end
