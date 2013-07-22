@@ -5,15 +5,16 @@ require 'gembots/bot'
 
 class MyBot1 < Gembots::Robot
   def on_idle
-    self.move
-    self.turn
+    self.move 50
+    self.turn 180
+    self.fire
   end
 end
 
 class MyBot2 < Gembots::Robot
   def on_idle
-    self.move 50
     self.turn 180
+    self.move 50
   end
 end
 

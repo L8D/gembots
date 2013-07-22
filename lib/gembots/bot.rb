@@ -49,11 +49,19 @@ class Gembots::Robot
       @actions[0][1] -= deg
 
       @actions.shift if @actions[0][1] == 0
+
+    when :fire
+      @window.spawn_proj self
+      @actions.shift
     end
   end
 
   def draw
     @images[@cur_image].draw_rot @x, @y, 1, @angle - 90 % 360
     @image.draw_rot @x, @y, 1, @angle - 90 % 360
+  end
+
+  def fire
+    @actions << [:fire]
   end
 end
