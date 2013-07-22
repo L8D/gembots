@@ -12,8 +12,11 @@ class Gembots::Robot
   # The format is like: `[[:move, 10], [:turn, 90]]`, meaning the robot will move 10 forward, then turn 90 degrees clockwise.
   attr_reader :actions
 
+  attr_reader :cooloff
+
   # Creates a new instance of the robot.
   def initialize window
+    @cooloff = 0
     @warped = false
     @actions = []
     @window = window
@@ -49,6 +52,7 @@ class Gembots::Robot
   # This attempts to preform the first action in the actions array.
   # If it finishes the action, it will pop that actions from the actions array, allowing it to preform the next.
   def update
+    @cooloff -= 1 unless @cooloff == 0
     return if @actions.empty?
     case @actions[0][0]
     when :move then
@@ -63,7 +67,7 @@ class Gembots::Robot
       @cur_image += 0.1
       @cur_image %= 7.0
 
-      @actions[0][1] -= 0.5
+      @actions[0][1] -= dist
       @actions.shift if @actions[0][1] == 0.0
 
     when :turn then
@@ -76,8 +80,11 @@ class Gembots::Robot
       @actions.shift if @actions[0][1] == 0
 
     when :fire
-      @window.spawn_proj self
-      @actions.shift
+      if @cooloff == 0
+        @window.spawn_proj self
+        @cooloff = 30
+        @actions.shift
+      end
     end
   end
 
@@ -89,7 +96,7 @@ class Gembots::Robot
 
   # Appends a fire action to the actions array.
   # The update method will call the arena's spawn_proj method.
-  def fire
-    @actions << [:fire]
+  def fire amount=1
+    amount.times { @actions << [:fire] }
   end
 end

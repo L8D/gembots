@@ -19,8 +19,8 @@ class Gembots::Projectile
   # Method called via the arena.
   # Moves the projectile 2 forward.
   def update
-    @x += Gosu::offset_x @angle, 2
-    @y += Gosu::offset_y @angle, 2
+    @x += Gosu::offset_x @angle, 4
+    @y += Gosu::offset_y @angle, 4
     @x %= 640
     @y %= 480
   end
