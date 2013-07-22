@@ -1,4 +1,4 @@
-# Gembots
+# Gembots [![Gem Version](https://badge.fury.io/rb/gembots.png)](http://badge.fury.io/rb/gembots)
 
 Gembots is a ruby library for creating your own battle bot in ruby. This is almost exclusively based on [FightCodeGame](http://fightcodegame.com), but it uses libgosu for the arena, and of course, it's in ruby. Currently it is in EXTREMELY early development.
 
