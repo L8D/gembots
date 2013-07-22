@@ -5,6 +5,8 @@ Gembots is a ruby library for creating your own battle bot in ruby. This is almo
 If you want to see a good example, just `bundle` and then `rake`.
 View the test code to see what's behind it.
 
+![Demo Pic](//raw.github.com/L8D/gembots/master/media/screenshot.png "Demo Pic")
+
 ## Installation
 
 Add this line to your application's Gemfile:
