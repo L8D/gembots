@@ -1,9 +1,20 @@
 require 'gembots'
 
+# Class used for creating a robot.
 class Gembots::Robot
-  attr_reader :x, :y, :angle, :actions
+  # X and Y positions
+  attr_reader :x, :y
 
+  # Current angle of robot.
+  attr_reader :angle
+
+  # Array containing arrays that represent actions that need to be completed.
+  # The format is like: `[[:move, 10], [:turn, 90]]`, meaning the robot will move 10 forward, then turn 90 degrees clockwise.
+  attr_reader :actions
+
+  # Creates a new instance of the robot.
   def initialize window
+    @warped = false
     @actions = []
     @window = window
     @images = Gosu::Image::load_tiles(window, "media/tank.png", 32, 32, false)
@@ -11,18 +22,32 @@ class Gembots::Robot
     @x = @y = @angle = @cur_image = 0.0
   end
 
+  # Method called via the arena.
+  # Warps the robot to the position specified.
   def warp x, y
-    @x, @y = x, y
+    @x, @y = x, y unless @warped
+    @warped = true
   end
 
+  # Appends a turn action to the actions array.
+  # The update method will turn the robot clockwise for the degree specified.
+  # If the degree is not specified, it defaults to 10.
+  # Use a negative value to rotate counter-clockwise.
   def turn angle=10
     @actions << [:turn, angle]
   end
 
+  # Appends a move action to the actions array.
+  # The update method will move the robot forward the distance specified.
+  # If the distance is not specified, it defaults to 10.
+  # Use a negative value to move in reverse.
   def move dist=10
     @actions << [:move, dist]
   end
 
+  # Method called via the arena.
+  # This attempts to preform the first action in the actions array.
+  # If it finishes the action, it will pop that actions from the actions array, allowing it to preform the next.
   def update
     return if @actions.empty?
     case @actions[0][0]
@@ -56,11 +81,14 @@ class Gembots::Robot
     end
   end
 
+  # Method called via the arena.
   def draw
     @images[@cur_image].draw_rot @x, @y, 1, @angle - 90 % 360
     @image.draw_rot @x, @y, 1, @angle - 90 % 360
   end
 
+  # Appends a fire action to the actions array.
+  # The update method will call the arena's spawn_proj method.
   def fire
     @actions << [:fire]
   end
