@@ -1,26 +1,32 @@
 require 'test/unit'
 require 'gembots'
-require 'gembots/arena'
-require 'gembots/bot'
 
-class MyBot1 < Gembots::Robot
-  def on_idle
-    self.move 50
-    self.turn 180
-    self.fire
+Bot1 = Module.new do
+  def self.on_idle bot
+    bot.move 50
+    bot.turn 360
+    bot.turn 90
+  end
+
+  def self.on_scan_bot bot, e_bot
+    bot.fire
   end
 end
 
-class MyBot2 < Gembots::Robot
-  def on_idle
-    self.turn 180
-    self.move 50
+Bot2 = Module.new do
+  def self.on_idle bot
+    bot.turn 180
+    bot.move 50
+  end
+
+  def self.on_scan_bot bot, e_bot
+    bot.fire
   end
 end
 
 class ArenaTest < Test::Unit::TestCase
   def test_arena_window
-    arena = Gembots::Arena.new MyBot1, MyBot2
+    arena = Gembots::Arena.new Bot1, Bot2
     arena.show
   end
 end

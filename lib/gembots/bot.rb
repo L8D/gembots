@@ -14,8 +14,13 @@ class Gembots::Robot
 
   attr_reader :cooloff
 
+  attr_reader :proto
+
+  attr_accessor :state
+
   # Creates a new instance of the robot.
-  def initialize window
+  def initialize window, proto
+    @proto = proto
     @cooloff = 0
     @warped = false
     @actions = []
@@ -71,7 +76,7 @@ class Gembots::Robot
       @actions.shift if @actions[0][1] == 0.0
 
     when :turn then
-      deg = @actions[0][1] <= 9 ? @actions[0][1] : 10
+      deg = @actions[0][1] <= 4 ? @actions[0][1] : 5
 
       @angle += deg
       @angle %= 360
@@ -98,5 +103,9 @@ class Gembots::Robot
   # The update method will call the arena's spawn_proj method.
   def fire amount=1
     amount.times { @actions << [:fire] }
+  end
+
+  def clear_actions
+    @actions = []
   end
 end

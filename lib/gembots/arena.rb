@@ -1,5 +1,4 @@
 require 'gembots'
-require 'gembots/projectile'
 
 # Class used for initializing the arena and opening the window.
 class Gembots::Arena < Gosu::Window
@@ -12,8 +11,9 @@ class Gembots::Arena < Gosu::Window
     @bots = []
     @projs = []
 
-    bots.each do |bot_class|
-      bot = bot_class.new self
+    bots.each do |bot_proto|
+      bot = Gembots::Robot.new self, bot_proto
+      bot.warp (rand * 1000).to_i % 640, (rand * 1000).to_i % 480
       bot.warp 320, 240
       @bots << bot
     end
@@ -34,12 +34,27 @@ class Gembots::Arena < Gosu::Window
     @projs.each &:update
 
     @bots.each do |bot|
-      bot.on_idle if bot.actions.empty?
+      if bot.actions.empty?
+        bot.proto::on_idle bot
+        bot.state = :idle
+      end
 
       @projs.each do |proj|
-        if (Gosu::distance bot.x, bot.y, proj.x, proj.y) < 10
+        if (Gosu::distance bot.x, bot.y, proj.x, proj.y) < 15 and proj.parent != bot
           @bots.delete bot
           @projs.delete proj
+        else
+          if proj.x < 0 or proj.y < 0 or proj.x > 640 or proj.y > 480
+            @projs.delete proj
+          end
+        end
+      end
+
+      (@bots.select { |b| b != bot }).each do |o_bot|
+        if bot.angle.to_i / 5 == ((Gosu::angle(bot.x, bot.y, o_bot.x, o_bot.y) * 10).to_i / 10 / 5) and bot.state != :scan
+          bot.state = :scan
+          bot.clear_actions
+          bot.proto.on_scan_bot bot, o_bot.clone.freeze
         end
       end
     end
@@ -53,6 +68,6 @@ class Gembots::Arena < Gosu::Window
 
   # Spawns a Projectile instance at bot's position and angle.
   def spawn_proj bot
-    @projs << Gembots::Projectile.new(self, bot.x, bot.y, bot.angle)
+    @projs << Gembots::Projectile.new(self, bot.x, bot.y, bot.angle, parent=bot)
   end
 end

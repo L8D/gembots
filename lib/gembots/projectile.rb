@@ -8,12 +8,15 @@ class Gembots::Projectile
   # Angle of the projectile.
   attr_reader :angle
 
-  def initialize window, x=0, y=0, angle=0
+  attr_reader :parent
+
+  def initialize window, x=0, y=0, angle=0, parent=nil
     @window = window
     @image = Gosu::Image.new @window, "#{Gembots::MEDIA}/projectile.png", false
     @angle = angle
     @x = x + Gosu::offset_x(@angle, 10)
     @y = y + Gosu::offset_y(@angle, 10)
+    @parent = parent
   end
 
   # Method called via the arena.
@@ -21,8 +24,6 @@ class Gembots::Projectile
   def update
     @x += Gosu::offset_x @angle, 4
     @y += Gosu::offset_y @angle, 4
-    @x %= 640
-    @y %= 480
   end
 
   # Method called via the arena.
